@@ -1,6 +1,7 @@
 import { Client } from "pg";
 import { config } from "dotenv";
 import express from "express";
+import fetch from "node-fetch";
 import cors from "cors";
 
 config(); //Read .env file lines as though they were env vars.
