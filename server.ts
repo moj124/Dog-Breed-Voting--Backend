@@ -40,6 +40,27 @@ app.get("/top", async (req, res) => {
   res.json(dbres.rows);
 });
 
+app.post("/add", async (req,res) => {
+  try {
+    const response = await fetch( `https://api.thedogapi.com/v1/breeds`);
+    let breeds = await response.json()
+    console.log(breeds)
+    breeds = await breeds.map((element: { name: any; temperament: any; life_span: any; weight: { metric: any; }; height: { metric: any; }; }) => `(${element.name},${element.temperament},${element.life_span},${element.weight.metric},${element.height.metric})`);
+    // console.log('Working',breeds)
+    const text = 'INSERT INTO dog ("breed","temperament","life_span","weight","height") VALUES($1,$2,$3,$4,$5)';
+    const values = breeds;
+  
+    const resd = await client.query(text, values.join(','));
+  
+      res.status(201).json({
+        status: "success"
+      });
+  
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.get("/:id", async (req, res) =>{
   const {id} = req.params;
   const dbres = await client.query('select dog.breed as breed, images.url as image, votes.votes as votes from dog, images, votes where dog.dog_id = $1 and dog.dog_id = images.dog_id and dog.dog_id = votes.dog_id',[id]);
@@ -79,27 +100,6 @@ app.post("/:id", async (req, res) => {
     });
   } catch (err){
     console.error(err.message);
-  }
-});
-
-app.post("/add", async (req,res) => {
-  try {
-    const response = await fetch( `https://api.thedogapi.com/v1/breeds`);
-    let breeds = await response.json()
-    console.log(breeds)
-    breeds = await breeds.map((element: { name: any; temperament: any; life_span: any; weight: { metric: any; }; height: { metric: any; }; }) => `(${element.name},${element.temperament},${element.life_span},${element.weight.metric},${element.height.metric})`);
-    // console.log('Working',breeds)
-    const text = 'INSERT INTO dog ("breed","temperament","life_span","weight","height") VALUES($1,$2,$3,$4,$5)';
-    const values = breeds;
-  
-    const resd = await client.query(text, values.join(','));
-  
-      res.status(201).json({
-        status: "success"
-      });
-  
-  } catch (error) {
-    console.log(error);
   }
 });
 
