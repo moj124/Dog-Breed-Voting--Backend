@@ -31,20 +31,43 @@ app.get("/", async (req, res) => {
   res.json(dbres.rows);
 });
 
+app.get("/leaderboard", async (req, res) => {
+  const dbres = await client.query('select dog.breed as breed, Count(*) as votes from dog, votes group by dog.breed order by votes desc, dog.breed');
+  res.json(dbres.rows);
+});
+
+app.get("/top", async (req, res) => {
+  const dbres = await client.query('select dog.breed as breed, Count(*) as votes from dog, votes group by dog.breed order by votes desc, dog.breed limit 3');
+  res.json(dbres.rows);
+});
+
 app.get("/:id", async (req, res) =>{
   const {id} = req.params;
   const dbres = await client.query('select dog.breed as breed, images.url as image from dog, images where dog.dog_id = $1 and dog.dog_id = images.dog_id',[id]);
-  res.send(dbres.rows)
+  res.send(dbres.rows[0])
 });
 
-app.post("/breeds", async (req, res) => {
-  const { title, message } = req.body;
-  console.log(title,message)
-  if (typeof message === "string") {
+app.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { vote } = req.body;
+    const updateDogVote = await client.query(
+      "UPDATE votes SET vote = $1 WHERE id = $2",
+      [vote,id]
+    );
 
-    const text =
-    "INSERT INTO dog(context,title) VALUES($1,$2) RETURNING *";
-    const values = [message,title];
+    res.status(201).json("Dog's vote was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.post("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { vote } = req.body;
+  try{
+    const text = "INSERT INTO votes(dog_id,vote) VALUES($1,$2) RETURNING *";
+    const values = [id,vote];
 
     const response = await client.query(text, values);
 
@@ -52,14 +75,12 @@ app.post("/breeds", async (req, res) => {
       status: "success",
       data : response
     });
-
-  } else {
-    res.status(400).json({
-      status: "fail",
-    });
-  
+  } catch (err){
+    console.error(err.message);
   }
 });
+
+
 
 
 //Start the server on the given port
