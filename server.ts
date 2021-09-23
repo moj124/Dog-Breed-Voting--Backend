@@ -43,11 +43,28 @@ app.get("/top", async (req, res) => {
 
 app.post("/add", async (req,res) => {
   try {
-  // console.log('Working',breeds)
   const text = 'INSERT INTO dog(breed,temperament,weight,height,life_span) VALUES($1,$2,$3,$4,$5)';
     const values = data;
   
     data.map(async element => await client.query(text, element))
+  
+    res.status(201).json({
+      status: "success"
+    });
+  
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.post("/votes", async (req,res) => {
+  try {
+    const ids = await client.query('select dog_id from dog' )
+    const rest = ids.rows.map((element: { dog_id: any; })=> [element.dog_id,0])
+  const text = 'INSERT INTO votes(dog_id,votes) VALUES($1,$2)';
+    const values = data;
+  
+    rest.map(async element => await client.query(text, element))
   
     res.status(201).json({
       status: "success"
@@ -111,21 +128,6 @@ app.delete("/:id", async (req,res) =>{
     console.log(err.message);
   }
 });
-
-
-async function getBreeds() {
-  const response = await fetch("https://api.thedogapi.com/v1/breeds");
-  let breeds = await response.json()
-  // console.log(breeds)
-  breeds = breeds.map((element: { name: any; temperament: any; weight: { metric: any; }; height: { metric: any; }; life_span: any; }) => [
-    element.name,
-    element.temperament,
-    element.weight.metric,
-    element.height.metric,
-    element.life_span
-  ]);
-  return breeds
-}
 
 //Start the server on the given port
 const port = process.env.PORT;
