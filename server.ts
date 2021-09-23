@@ -42,55 +42,55 @@ app.get("/top", async (req, res) => {
   res.json(dbres.rows);
 });
 
-app.post("/add", async (req,res) => {
-  try {
-  const text = 'INSERT INTO dog(breed,temperament,weight,height,life_span) VALUES($1,$2,$3,$4,$5)';
-    const values = data;
+// app.post("/add", async (req,res) => {
+//   try {
+//   const text = 'INSERT INTO dog(breed,temperament,weight,height,life_span) VALUES($1,$2,$3,$4,$5)';
+//     const values = data;
   
-    data.map(async element => await client.query(text, element))
+//     data.map(async element => await client.query(text, element))
   
-    res.status(201).json({
-      status: "success"
-    });
+//     res.status(201).json({
+//       status: "success"
+//     });
   
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// });
 
-app.post("/votes", async (req,res) => {
-  try {
-    const ids = await client.query('select dog_id from dog' )
-    const rest = ids.rows.map((element: { dog_id: any; })=> [element.dog_id,0])
-    const text = 'INSERT INTO votes(dog_id,votes) VALUES($1,$2)';
+// app.post("/votes", async (req,res) => {
+//   try {
+//     const ids = await client.query('select dog_id from dog' )
+//     const rest = ids.rows.map((element: { dog_id: any; })=> [element.dog_id,0])
+//     const text = 'INSERT INTO votes(dog_id,votes) VALUES($1,$2)';
   
-    rest.map(async element => await client.query(text, element))
+//     rest.map(async element => await client.query(text, element))
   
-    res.status(201).json({
-      status: "success"
-    });
+//     res.status(201).json({
+//       status: "success"
+//     });
   
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// });
 
-app.post("/images", async (req,res) => {
-  try {
-    const ids = await client.query('select dog_id, breed from dog' );
-    const rest = ids.rows.map((element,index)=> [element.dog_id,all[index].image.url])
-    const text = 'INSERT INTO images(dog_id,url) VALUES($1,$2)';
+// app.post("/images", async (req,res) => {
+//   try {
+//     const ids = await client.query('select dog_id, breed from dog' );
+//     const rest = ids.rows.map((element,index)=> [element.dog_id,all[index].image.url])
+//     const text = 'INSERT INTO images(dog_id,url) VALUES($1,$2)';
   
-    rest.map(async element => await client.query(text, element))
+//     rest.map(async element => await client.query(text, element))
   
-    res.status(201).json({
-      status: "success"
-    });
+//     res.status(201).json({
+//       status: "success"
+//     });
   
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// });
 
 app.get("/:id", async (req, res) =>{
   const {id} = req.params;
