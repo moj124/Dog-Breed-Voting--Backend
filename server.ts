@@ -40,27 +40,27 @@ app.get("/top", async (req, res) => {
   res.json(dbres.rows);
 });
 
-// app.post("/add", async (req,res) => {
+app.post("/add", async (req,res) => {
   
-//   try {
-//     const response = await fetch("https://api.thedogapi.com/v1/breeds");
-//     let breeds = await response.json()
-//     // console.log(breeds)
-//     breeds = breeds.map((element: { name: any; temperament: any; life_span: any; weight: { metric: any; }; height: { metric: any; }; }) => `(${element.name},${element.temperament},${element.life_span},${element.weight.metric},${element.height.metric})`);
-//     // console.log('Working',breeds)
-//     const text = 'INSERT INTO dog (breed,temperament,life_span,weight,height) VALUES($1,$2,$3,$4,$5) RETURNING *';
-//     const values = [...breeds];
+  try {
+    const response = await fetch("https://api.thedogapi.com/v1/breeds");
+    let breeds = await response.json()
+    // console.log(breeds)
+    breeds = breeds.map((element: { name: any; temperament: any; life_span: any; weight: { metric: any; }; height: { metric: any; }; }) => `(${element.name},${element.temperament},${element.life_span},${element.weight.metric},${element.height.metric})`);
+    // console.log('Working',breeds)
+    const text = 'INSERT INTO dog (breed,temperament,life_span,weight,height) VALUES($1,$2,$3,$4,$5) RETURNING *';
+    const values = [...breeds];
   
-//     const rest = await client.query(text, values);
+    const rest = await client.query(text, values);
   
-//     res.status(201).json({
-//       status: "success"
-//     });
+    res.status(201).json({
+      status: "success"
+    });
   
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// });
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 app.get("/:id", async (req, res) =>{
   const {id} = req.params;
