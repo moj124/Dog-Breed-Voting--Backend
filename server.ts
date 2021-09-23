@@ -52,7 +52,7 @@ app.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { vote } = req.body;
     const updateDogVote = await client.query(
-      "UPDATE votes SET votes = $1 WHERE id = $2",
+      "UPDATE votes SET votes = $1 WHERE dog_id = $2",
       [vote,id]
     );
 
