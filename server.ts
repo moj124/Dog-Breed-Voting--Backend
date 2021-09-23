@@ -32,12 +32,12 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/leaderboard", async (req, res) => {
-  const dbres = await client.query('select dog.breed as breed, Count(*) as votes from dog, votes group by dog.breed order by votes desc, dog.breed');
+  const dbres = await client.query('select dog.breed as breed, Sum(*) as votes from dog, votes group by dog.breed order by votes desc, dog.breed');
   res.json(dbres.rows);
 });
 
 app.get("/top", async (req, res) => {
-  const dbres = await client.query('select dog.breed as breed, Count(*) as votes from dog, votes group by dog.breed order by votes desc, dog.breed limit 3');
+  const dbres = await client.query('select dog.breed as breed, Sum(*) as votes from dog, votes group by dog.breed order by votes desc, dog.breed limit 3');
   res.json(dbres.rows);
 });
 
