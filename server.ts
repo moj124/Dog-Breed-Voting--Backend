@@ -2,7 +2,6 @@ import { Client } from "pg";
 import { config } from "dotenv";
 import express from "express";
 import cors from "cors";
-const loadData = require('load_dog_breeds');
 
 config(); //Read .env file lines as though they were env vars.
 //Call this script with the environment variable LOCAL set if you want to connect to a local db (i.e. without SSL)
@@ -29,7 +28,6 @@ client.connect();
 app.get("/", async (req, res) => {
   const dbres = await client.query('select * from Dog');
   res.json(dbres.rows);
-  console.log(loadData())
 });
 
 app.get("/leaderboard", async (req, res) => {
