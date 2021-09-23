@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import express from "express";
 import cors from "cors";
 import {data} from './data';
+import {all} from './images';
 
 config(); //Read .env file lines as though they were env vars.
 //Call this script with the environment variable LOCAL set if you want to connect to a local db (i.e. without SSL)
@@ -62,6 +63,23 @@ app.post("/votes", async (req,res) => {
     const ids = await client.query('select dog_id from dog' )
     const rest = ids.rows.map((element: { dog_id: any; })=> [element.dog_id,0])
     const text = 'INSERT INTO votes(dog_id,votes) VALUES($1,$2)';
+  
+    rest.map(async element => await client.query(text, element))
+  
+    res.status(201).json({
+      status: "success"
+    });
+  
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.post("/images", async (req,res) => {
+  try {
+    const ids = await client.query('select dog_id, breed from dog' );
+    const rest = ids.rows.map((element,index)=> [element.dog_id,all[index].image.url])
+    const text = 'INSERT INTO images(dog_id,url) VALUES($1,$2)';
   
     rest.map(async element => await client.query(text, element))
   

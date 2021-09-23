@@ -13,16 +13,16 @@ import fetch from "node-fetch";
     const response = await fetch("https://api.thedogapi.com/v1/breeds");
   let breeds = await response.json()
   console.log(breeds)
-  breeds = breeds.map(element => [
-    element.name,
-    element.temperament,
-    element.weight.metric,
-    element.height.metric,
-    element.life_span
-  ]);
+  // breeds = breeds.map(element => [
+  //   element.name,
+  //   element.temperament,
+  //   element.weight.metric,
+  //   element.height.metric,
+  //   element.life_span
+  // ]);
     // Write songs array in songs.json file
     writeFile(
-      "data.json",
+      "images.ts",
       JSON.stringify(breeds, null, 2),
       (err) => {
         if (err) {
