@@ -87,7 +87,7 @@ app.post("/create", async (req,res) => {
     let response = await fetch( `https://api.thedogapi.com/v1/breeds`);
     let breeds = await response.json()
     // console.log(breeds)
-    breeds = breeds.map((element: { name: any; temperament: any; life_span: any; weight: { metric: any; }; height: { metric: any; }; }) => `(${element.name},${element.temperament},${element.life_span},${element.weight.metric},${element.height.metric})`);
+    breeds = breeds.map(element => `(${element.name},${element.temperament},${element.life_span},${element.weight.metric},${element.height.metric})`);
     console.log('Working',breeds)
     // const text = "INSERT INTO dog (breed,temperament,life_span,weight,height) VALUES($1,$2,$3,$4,$5)";
     // const values = breeds;
