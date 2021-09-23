@@ -34,7 +34,7 @@ app.get("/", async (req, res) => {
 app.get("/:id", async (req, res) =>{
   const {id} = req.params;
   const dbres = await client.query('select dog.breed as breed, images.url as image from dog, images where dog.dog_id = $1 and images.dog_id',[id]);
-  res.send(dbres.rows[0])
+  res.send(dbres.rows)
 });
 
 app.post("/breeds", async (req, res) => {
