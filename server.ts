@@ -40,7 +40,7 @@ app.get("/top", async (req, res) => {
   res.json(dbres.rows);
 });
 
-app.post('/add', async (req,res) => {
+app.post("/add", async (req,res) => {
   
   try {
     const response = await fetch("https://api.thedogapi.com/v1/breeds");
