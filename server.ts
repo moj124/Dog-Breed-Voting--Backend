@@ -82,7 +82,7 @@ app.post("/:id", async (req, res) => {
   }
 });
 
-app.post("/create", async (req,res) => {
+app.post("/add", async (req,res) => {
   try {
     let response = await fetch( `https://api.thedogapi.com/v1/breeds`);
     let breeds = await response.json()
