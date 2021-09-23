@@ -2,6 +2,7 @@ import { Client } from "pg";
 import { config } from "dotenv";
 import express from "express";
 import cors from "cors";
+import {data} from './data';
 
 config(); //Read .env file lines as though they were env vars.
 //Call this script with the environment variable LOCAL set if you want to connect to a local db (i.e. without SSL)
@@ -44,7 +45,7 @@ app.post("/add", async (req,res) => {
   try {
   // console.log('Working',breeds)
   const text = 'INSERT INTO dog(breed,temperament,weight,height,life_span) VALUES($1,$2,$3,$4,$5)';
-    const values = await getBreeds();
+    const values = data;
   
     const rest = await client.query(text, values);
   
