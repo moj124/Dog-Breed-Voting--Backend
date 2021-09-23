@@ -47,7 +47,7 @@ app.post("/add", async (req,res) => {
   const text = 'INSERT INTO dog(breed,temperament,weight,height,life_span) VALUES($1,$2,$3,$4,$5)';
     const values = data;
   
-    const rest = await client.query(text, values);
+    data.map(async element => await client.query(text, element))
   
     res.status(201).json({
       status: "success"
