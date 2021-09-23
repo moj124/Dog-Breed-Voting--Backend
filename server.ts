@@ -73,7 +73,10 @@ app.post("/:id", async (req, res) => {
 
     res.status(201).json({
       status: "success",
-      data : response
+      data : {
+        "dog_id" : id,
+        "votes" : vote      
+      }
     });
   } catch (err){
     console.error(err.message);
