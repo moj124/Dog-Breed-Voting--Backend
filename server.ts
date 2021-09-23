@@ -43,7 +43,7 @@ app.get("/top", async (req, res) => {
 
 app.get("/:id", async (req, res) =>{
   const {id} = req.params;
-  const dbres = await client.query('select dog.breed as breed, images.url as image from dog, images where dog.dog_id = $1 and dog.dog_id = images.dog_id',[id]);
+  const dbres = await client.query('select dog.breed as breed, images.url as image, votes.votes as votes from dog, images, votes where dog.dog_id = $1 and dog.dog_id = images.dog_id and dog.dog_id = votes.dog_id',[id]);
   res.send(dbres.rows[0])
 });
 
