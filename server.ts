@@ -52,7 +52,7 @@ app.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { vote } = req.body;
     const updateDogVote = await client.query(
-      "UPDATE votes SET vote = $1 WHERE id = $2",
+      "UPDATE votes SET votes = $1 WHERE id = $2",
       [vote,id]
     );
 
@@ -66,7 +66,7 @@ app.post("/:id", async (req, res) => {
   const { id } = req.params;
   const { vote } = req.body;
   try{
-    const text = "INSERT INTO votes(dog_id,vote) VALUES($1,$2) RETURNING *";
+    const text = "INSERT INTO votes(dog_id,votes) VALUES($1,$2) RETURNING *";
     const values = [id,vote];
 
     const response = await client.query(text, values);
