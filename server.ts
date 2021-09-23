@@ -31,6 +31,36 @@ app.get("/", async (req, res) => {
   res.json(dbres.rows);
 });
 
+app.get("/:id", async (req, res) =>{
+  const {id} = req.params;
+  const dbres = await client.query('select dog.breed as breed, images.url as image from dog, images where dog.dog_id = $1 and images.dog_id',[id]);
+  res.send(dbres.rows[0])
+});
+
+app.post("/breeds", async (req, res) => {
+  const { title, message } = req.body;
+  console.log(title,message)
+  if (typeof message === "string") {
+
+    const text =
+    "INSERT INTO dog(context,title) VALUES($1,$2) RETURNING *";
+    const values = [message,title];
+
+    const response = await client.query(text, values);
+
+    res.status(201).json({
+      status: "success",
+      data : response
+    });
+
+  } else {
+    res.status(400).json({
+      status: "fail",
+    });
+  
+  }
+});
+
 
 //Start the server on the given port
 const port = process.env.PORT;
