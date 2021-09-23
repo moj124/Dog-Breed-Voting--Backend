@@ -57,8 +57,8 @@ app.post('/add', async (req,res) => {
         status: "success"
       });
   
-  } catch (error) {
-    return res.send(error.message);
+  } catch (err) {
+    console.error(err.message);
   }
 });
 
