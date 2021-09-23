@@ -61,8 +61,7 @@ app.post("/votes", async (req,res) => {
   try {
     const ids = await client.query('select dog_id from dog' )
     const rest = ids.rows.map((element: { dog_id: any; })=> [element.dog_id,0])
-  const text = 'INSERT INTO votes(dog_id,votes) VALUES($1,$2)';
-    const values = data;
+    const text = 'INSERT INTO votes(dog_id,votes) VALUES($1,$2)';
   
     rest.map(async element => await client.query(text, element))
   
