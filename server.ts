@@ -137,7 +137,13 @@ app.post("/:id", async (req, res) => {
 app.delete("/:id", async (req,res) =>{
   try {
     const { id } = req.params;
-    const deleteTodo = await client.query("DELETE FROM dog WHERE dog_id = $1", [
+    const deleteDog = await client.query("DELETE FROM dog WHERE dog_id = $1", [
+      id
+    ]);
+    const deleteVotes = await client.query("DELETE FROM votes WHERE dog_id = $1", [
+      id
+    ]);
+    const deleteImage = await client.query("DELETE FROM images WHERE dog_id = $1", [
       id
     ]);
     res.json("Breed was deleted!");
